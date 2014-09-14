@@ -61,7 +61,7 @@ sub calculate_perplexity {
     open my $tmpfile, '>', 'search-terms';
     print $tmpfile $query;
     my $output = `ngram -lm $domain-3gram.lm -ppl search-terms`;
-    $output =~ /ppl1= (\d+\.\d+)/;
+    $output =~ /ppl1= (\d+\.?\d+?)/;
     my $ppl = $1;
     return $ppl;
 }
@@ -73,7 +73,8 @@ sub generate_possible_searches {
     return if not defined $mappings{$domain};
 
     my %possibilities;
-    $possibilities{$query} = 1;
+    $possibilities{$query} = calculate_perplexity($domain, $new_query);
+
     my $domain_map = $mappings{$domain};
     for my $global_add (@{$domain_map->{add_for_all}}) {
         my $new_query = $query . ' ' . $global_add;
@@ -101,7 +102,7 @@ sub generate_possible_searches {
 
     # sort based on perplexity
     my @result = sort { $possibilities{$a} <=> $possibilities{$b} } keys %possibilities;
-    return \@result;
+    return [@result[0 .. 4]];
 }
 
 post '/searches' => sub {
