@@ -5,6 +5,12 @@ use 5.18.2;
 
 use Mojolicious::Lite;
 
+sub python_to_pydev {
+    my $list = shift;
+    my @result = map { s/python/python development/g } @{$list};
+    \@result;
+}
+
 sub guess_domain {
     my $query = shift;
 
@@ -34,7 +40,7 @@ post '/domains' => sub {
     my $options = guess_domain $query;
     $c->render(json => {
         type => 'domain',
-        options => $options
+        options => python_to_pydev $options
     });
 
 };
@@ -136,7 +142,7 @@ post '/searches' => sub {
     my $options = generate_possible_searches($domain, $query);
     $c->render(json => {
         type => 'search',
-        options => $options
+        options => python_to_pydev $options
     });
 };
 
