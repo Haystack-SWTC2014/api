@@ -28,7 +28,7 @@ sub guess_domain {
     \@perplexity;
 }
 
-post '/domain' => sub {
+post '/domains' => sub {
     my $c = shift;
     my $query = $c->param('query');
     my $options = guess_domain $query;
