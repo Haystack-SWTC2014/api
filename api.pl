@@ -24,7 +24,7 @@ my %mappings = (
             add => [qw(parse)]
         },
         report => {
-            add => [qw(graph statistics), 'data mining'],
+            add => [qw(graph statistics)],
             replace => [qw(analysis)]
         },
         array => {
