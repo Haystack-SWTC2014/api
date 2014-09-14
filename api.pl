@@ -73,7 +73,7 @@ sub generate_possible_searches {
     return if not defined $mappings{$domain};
 
     my %possibilities;
-    $possibilities{$query} = calculate_perplexity($domain, $new_query);
+    $possibilities{$query} = calculate_perplexity($domain, $query);
 
     my $domain_map = $mappings{$domain};
     for my $global_add (@{$domain_map->{add_for_all}}) {
