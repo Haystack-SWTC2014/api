@@ -21,7 +21,7 @@ my %mappings = (
     python => {
         add_for_all => [qw(module library pypi)],
         csv => {
-            add => [qw(parse)],
+            add => [qw(parse)]
         },
         report => {
             add => [qw(graph statistics), 'data mining'],
@@ -61,7 +61,7 @@ sub calculate_perplexity {
     open my $tmpfile, '>', 'search-terms';
     print $tmpfile $query;
     my $output = `ngram -lm $domain-3gram.lm -ppl search-terms`;
-    my $result = /ppl1= (\d+\.\d+)/;
+    $output =~ /ppl1= (\d+\.\d+)/;
     my $ppl = $1;
     return $ppl;
 }
@@ -81,16 +81,21 @@ sub generate_possible_searches {
     }
 
     for my $keyword (keys %{$domain_map}) {
+        next if $keyword eq 'add_for_all';
         my $word = $domain_map->{$keyword};
 
-        for my $replace (@{$word->{replace}}) {
-            my $new_query = $query =~ s/$keyword/$replace/r;
-            $possibilities{$new_query} = calculate_perplexity($domain, $new_query);
+        if (defined $word->{replace}) {
+            for my $replace (@{$word->{replace}}) {
+                my $new_query = $query =~ s/$keyword/$replace/r;
+                $possibilities{$new_query} = calculate_perplexity($domain, $new_query);
+            }
         }
 
-        for my $add (@{$word->{add}}) {
-            my $new_query = "$query $add";
-            $possibilities{$new_query} = calculate_perplexity($domain, $new_query);
+        if (defined $word->{add}) {
+            for my $add (@{$word->{add}}) {
+                my $new_query = "$query $add";
+                $possibilities{$new_query} = calculate_perplexity($domain, $new_query);
+            }
         }
     }
 
@@ -103,7 +108,7 @@ post '/searches' => sub {
     my $c = shift;
     my $query = $c->param('query');
     my $domain = $c->param('domain');
-    my $options = generate_possible_searches($query, $domain);
+    my $options = generate_possible_searches($domain, $query);
     $c->render(json => {
         type => 'search',
         options => $options
