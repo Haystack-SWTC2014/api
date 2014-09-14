@@ -16,7 +16,7 @@ sub guess_domain {
     my @perplexity;
     foreach my $model (@models) {
         open my $tmpfile, '>', 'domain-guess-search-terms';
-        print $tmpfile join ' ', @words;
+        print $tmpfile $query;
         my $output = `ngram -lm $model-3gram.lm -ppl domain-guess-search-terms`;
         $output =~ /ppl1= (\d+\.?\d+?)/;
         my $ppl = $1;
