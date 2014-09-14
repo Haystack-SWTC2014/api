@@ -11,6 +11,11 @@ sub python_to_pydev {
     \@result;
 }
 
+sub pydev_to_python {
+    my $item = shift;
+    $item =~ s/python development/python/r;
+}
+
 sub guess_domain {
     my $query = shift;
 
@@ -138,7 +143,7 @@ sub generate_possible_searches {
 post '/searches' => sub {
     my $c = shift;
     my $query = $c->param('query');
-    my $domain = $c->param('domain');
+    my $domain = pydev_to_python $c->param('domain');
     my $options = generate_possible_searches($domain, $query);
     $c->render(json => {
         type => 'search',
