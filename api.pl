@@ -83,6 +83,8 @@ sub generate_possible_searches {
 
     for my $keyword (keys %{$domain_map}) {
         next if $keyword eq 'add_for_all';
+        next if not defined $domain_map->{$keyword};
+
         my $word = $domain_map->{$keyword};
 
         if (defined $word->{replace}) {
