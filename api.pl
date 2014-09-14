@@ -60,19 +60,20 @@ sub calculate_perplexity {
     my $query = shift;
     open my $tmpfile, '>', 'search-terms';
     print $tmpfile $query;
-    my $output = `ngram -lm $model-3gram.lm -ppl search-terms`;
+    my $output = `ngram -lm $domain-3gram.lm -ppl search-terms`;
     my $result = /ppl1= (\d+\.\d+)/;
     my $ppl = $1;
-    push $ppl;
+    return $ppl;
 }
 
-sub generate_posible_searches {
+sub generate_possible_searches {
     my $domain = shift;
     my $query = shift;
     my @query_terms = split ' ', $query;
     return if not defined $mappings{$domain};
 
-    my %possibilities{$query} = 1;
+    my %possibilities;
+    $possibilities{$query} = 1;
     my $domain_map = $mappings{$domain};
     for my $global_add (@{$domain_map->{add_for_all}}) {
         my $new_query = $query . ' ' . $global_add;
