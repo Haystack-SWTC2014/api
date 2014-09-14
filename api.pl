@@ -7,7 +7,7 @@ use Mojolicious::Lite;
 
 sub python_to_pydev {
     my $list = shift;
-    my @result = map { s/python/python development/g } @{$list};
+    my @result = map { s/python/python development/r } @{$list};
     \@result;
 }
 
