@@ -147,7 +147,7 @@ post '/searches' => sub {
     my $options = generate_possible_searches($domain, $query);
     $c->render(json => {
         type => 'search',
-        options => python_to_pydev $options
+        options => $options
     });
 };
 
