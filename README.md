@@ -56,13 +56,13 @@ That is, from a bigram perspective, the probability that the next word after "th
 
 ### Guessing a domain
 
-Once we have our expert language models, we collect the user's search query and see which domain it matches better. We collect a value called __perplexity__, which approximately describes how well the collection of probabilities that make up our language model predict the given input. In other words, how probable is our input, according to the each model?
+Once we have our expert language models, we collect the user's search query and see which domain it matches better. We collect a value called __perplexity__, which approximately describes how well the collection of probabilities that make up our language model predict the given input. In other words, how probable is our input, according to each model? Lower perplexity indicates a better fit.
 
 The domain options (in this case two) are returned to the user ranked by perplexity, and the user picks one.
 
 ### Generating better search terms
 
-Once we know the domain (i.e. which model the user cares about), we generate permutations of the original search query by substituting/adding terms to the query and seeing how well said the modified queries are predicted by the expert language model. We're trying to see which variation compares best to the language used by domain experts, because that's the sort of language that is going to lead you to the best results on Google. 
+Once we know the domain (i.e. which model the user cares about), we generate permutations of the original search query by substituting/adding terms to the query and seeing how well said the modified queries are predicted by the expert language model. We're trying to see which variation compares best to the language used by domain experts, because that's the sort of language that will lead you to the best results on Google. 
 
 Once that's done, we select the top 5 results and present them to the user in the Chrome extension (well, hacked into the Google search UI). They pick one, it plugs in the search, and they (hopefully) get better results.
 
