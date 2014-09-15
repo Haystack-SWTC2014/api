@@ -15,8 +15,8 @@ The idea with Haystack is to take your original query, ask you which content are
 You'll need:
 
 * A recent version of Perl (5.18.2 is specified, but >=5.16 will be fine if you remove that line).
-* (Mojolicious)[http://mojolico.us], the lovely web framework.
-* (SRILM)[http://www.speech.sri.com/projects/srilm/]. Language modelling toolkit. 
+* [Mojolicious](http://mojolico.us), the lovely web framework.
+* [SRILM](http://www.speech.sri.com/projects/srilm/). Language modelling toolkit. 
     
 ### SRILM
 
@@ -50,15 +50,21 @@ This just describes a large collection of probabilities based on word relationsh
 1. `The horse ran down the road.`
 2. `The horse stood patiently, watching the other animals.`
 
-We could say that given two words as input "The horse", the probability that the next word will be "ran" is 50%. Same for "stood". Because our model is __interpolated__, we also analyze the text at the bigram and even unigram level (at which point you're just discussing word frequencies). That is, from a bigram perspective, the probability that the next word after "the" will be "road" is 25%: of the 4 instances of "the", it occurs once as the following word. Of course, "the" is a stopword that should probably be stripped out, but you get the idea.  
+We could say that given two words as input "The horse", the probability that the next word will be "ran" is 50%. Same for "stood". Because our model is __interpolated__, we also analyze the text at the bigram and even unigram level (at which point you're just discussing word frequencies). 
+
+That is, from a bigram perspective, the probability that the next word after "the" will be "road" is 25%: of the 4 instances of "the", it occurs once as the following word. Of course, "the" is a stopword that should probably be stripped out, but you get the idea.  
 
 ### Guessing a domain
 
-Once we have our expert language models, we collect the user's search query and see which domain it matches better. We collect a value called __perplexity__, which approximately describes how well the collection of probabilities that make up our language model predict the given input. In other words, how probable is our input, according to the each model? The domain options (in this case two) are returned to the user ranked by perplexity, and the user picks one.
+Once we have our expert language models, we collect the user's search query and see which domain it matches better. We collect a value called __perplexity__, which approximately describes how well the collection of probabilities that make up our language model predict the given input. In other words, how probable is our input, according to the each model?
+
+The domain options (in this case two) are returned to the user ranked by perplexity, and the user picks one.
 
 ### Generating better search terms
 
-Once we know the domain (i.e. which model the user cares about), we generate permutations of the original search query by substituting/adding terms to the query and seeing how well said the modified queries are predicted by the expert language model. In other words, we're trying to see which variation compares best to the language used by domain experts, because that's the sort of language that is going to lead you to the best results on Google. We select the top 5 results and present them to the user in the Chrome extension (well, hacked into the Google search UI).
+Once we know the domain (i.e. which model the user cares about), we generate permutations of the original search query by substituting/adding terms to the query and seeing how well said the modified queries are predicted by the expert language model. We're trying to see which variation compares best to the language used by domain experts, because that's the sort of language that is going to lead you to the best results on Google. 
+
+Once that's done, we select the top 5 results and present them to the user in the Chrome extension (well, hacked into the Google search UI). They pick one, it plugs in the search, and they (hopefully) get better results.
 
 #### Search term permutation generation
 
