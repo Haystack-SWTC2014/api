@@ -20,20 +20,20 @@ You'll need:
     
 ### SRILM
 
-Building/installing SRILM is a little tricky, but follow `srilm/INSTALL` closely and it'll be ok. Make sure to set $SRILM in your environment to the SRILM source directory.
+Building/installing SRILM is a little tricky, but follow `srilm/INSTALL` closely and it'll be ok. Make sure to set `$SRILM` in your environment to the SRILM source directory.
 
-Once it has built, make sure to add `$SRILM/bin` to your `$PATH` so that the Haystack API can find it.
+Once it has built, make sure to add `$SRILM/bin` to your `$PATH` so that the Haystack API can find the `ngram` tool.
 
-Then, you need to create your language models.
+Next you need to create your language models.
 
-A two step process for each model you want to add (in our case, we did two: python and snakes):
+This is a two step process for each model you want to add (in our case, we did two: python and snakes):
 
 1. `ngram-count -write snakes-3gram.count -tolower -interpolate3 -text snakes.txt`
 2. `ngram-count -read snakes-3gram.count -lm snakes-3gram.lm -order 3`
 
 Where `snakes.txt` is a large (megabyte or more, ideally) collection of text about snakes, with one sentence per line.
 
-Put the resulting "snakes-3gram.lm" file into the same directory as api.pl. Do the same thing for "python" instead of snakes and you should be good to go.
+Put the resulting "snakes-3gram.lm" file into the same directory as `api.pl`. Do the same thing for "python" instead of snakes and you should be good to go.
 
 Note that you'll need to set up both `snakes-3gram.lm` and `python-3gram.lm` in order for the API to work without any changes. Sorry, hackathon code.
 
@@ -52,7 +52,7 @@ This just describes a large collection of probabilities based on word relationsh
 
 We could say that given two words as input "The horse", the probability that the next word will be "ran" is 50%. Same for "stood". Because our model is __interpolated__, we also analyze the text at the bigram and even unigram level (at which point you're just discussing word frequencies). 
 
-That is, from a bigram perspective, the probability that the next word after "the" will be "road" is 25%: of the 4 instances of "the", it occurs once as the following word. Of course, "the" is a stopword that should probably be stripped out, but you get the idea.  
+That is, from a bigram perspective, the probability that the next word after "the" will be "road" is 25%: of the four instances of "the", "road" occurs once as the following word. Of course, "the" is a stopword that should probably be stripped out, but you get the idea.  
 
 ### Guessing a domain
 
